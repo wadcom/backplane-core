@@ -344,6 +344,12 @@
         </preamble>
         <artwork type="code">http://backplane.example.com/v1/bus/customer.com/channel/8ec92f459fa70b0da1a40e8fe70a0bc8</artwork>
       </figure>
+
+      <t>In the example above the Channel identifier URL is constructed from
+        the Backplane server hostname ("backplane.example.com"), the Bus name
+        ("customer.com") and the Channel Name ("8ec92f459fa70b0da1a40e8fe70a0bc8").
+      </t>
+
     </section>
 
     <section anchor="backplane.messages" title="Backplane Messages">
@@ -381,8 +387,7 @@
             the Backplane Message
           </t>
           <t hangText="channel_name">
-            the Channel Name the message was posted to (can be used to
-            construct Channel identifier of the message)
+            the Channel Name the message was posted to
           </t>
           <t hangText="id">
             an arbitrary string identifier assigned by the server to
@@ -390,10 +395,31 @@
           </t>
         </list>
       </t>
+
       <t>
         For the purpose of managing and referencing Backplane Messages,
         a Backplane Server wraps them with the meta information
         described above into Backplane Frames.
+      </t>
+
+      <t>
+        Note that to reference the channel the message was posted to a
+        Backplane frame uses Channel Name (not id). This allows the receiving
+        Backplane Client to reconstruct the Channel id as outlined in
+        <xref target="channels">Channels</xref>.
+      </t>
+
+      <t>
+        To illustrate a use case where Channel id reconstruction is
+        useful, consider a multihomed Backplane Server. Such server is known
+        to its clients by multiple names that can be used interchangeably.
+        Every client is however configured to access the server through a
+        concrete host name and the access credentials are a part of the
+        configuration. If a Channel Name was contained in the Backplane
+        frame, the client would not necessarily be able to access the Channel
+        directly (by issuing a GET request) since the host name being the
+        part of the Channel Name might not match the one in the client's
+        configuration. 
       </t>
 
     </section>
